@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nwin Gaming Platform - Play & Earn</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            color: #ffd700;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .balance-display {
+            background: #ffd700;
+            color: #000;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .user-name {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        nav button {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        nav button:hover {
+            background: #ff5252;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Authentication Section */
+        .auth-section {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            margin: 50px auto;
+            text-align: center;
+        }
+
+        .auth-section h2 {
+            margin-bottom: 30px;
+            color: #1e3c72;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #ffd700;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle-auth {
+            margin-top: 15px;
+            color: #666;
+        }
+
+        .toggle-auth a {
+            color: #ffd700;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .sidebar {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+        }
+
+        .sidebar h3 {
+            margin-bottom: 20px;
+            color: #1e3c72;
+            border-bottom: 2px solid #ffd700;
+            padding-bottom: 10px;
+        }
+
+        .sidebar-btn {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            background: #f0f0f0;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .sidebar-btn:hover {
+            background: #ffd700;
+            border-color: #ffd700;
+            color: #000;
+        }
+
+        .sidebar-btn.active {
+            background: #1e3c72;
+            color: white;
+            border-color: #1e3c72;
+        }
+
+        /* Games Grid */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .game-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-card.color-game {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .game-card.mines-game {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .game-card.jilli-game {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .game-card h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .game-card p {
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .game-card button {
+            background: white;
+            color: #333;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .game-card button:hover {
+            background: #f0f0f0;
+        }
+
+        /* Game Play Area */
+        .game-area {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .game-area h2 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+        }
+
+        .game-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .game-controls input {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .game-controls button {
+            padding: 10px 20px;
+            background: #1e3c72;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .game-controls button:hover {
+            background: #2a5298;
+        }
+
+        .color-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .color-btn {
+            width: 100px;
+            height: 100px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .color-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .red-btn { background: #ff6b6b; }
+        .green-btn { background: #51cf66; }
+        .blue-btn { background: #4c6ef5; }
+
+        .game-result {
+            background: #f0f0f0;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .result-win {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .result-loss {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Wallet Section */
+        .wallet-section {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+        }
+
+        .wallet-section h3 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+        }
+
+        .balance-info {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .balance-info h4 {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .balance-info .amount {
+            font-size: 36px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .transaction-btn {
+            width: 48%;
+            padding: 12px;
+            margin: 5px 1%;
+            background: #f0f0f0;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+
+        .transaction-btn:hover {
+            background: #ffd700;
+            border-color: #ffd700;
+        }
+
+        .transaction-history {
+            margin-top: 20px;
+        }
+
+        .transaction-history h4 {
+            margin-bottom: 15px;
+            color: #1e3c72;
+        }
+
+        .transaction-item {
+            background: #f0f0f0;
+            padding: 10px;
+            margin: 10px 0;
+            border-left: 4px solid #ffd700;
+            border-radius: 5px;
+        }
+
+        /* Leaderboard */
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .leaderboard-table thead {
+            background: #1e3c72;
+            color: white;
+        }
+
+        .leaderboard-table th,
+        .leaderboard-table td {
+            padding: 15px;
+            text-align: left;
+        }
+
+        .leaderboard-table tbody tr:nth-child(even) {
+            background: #f0f0f0;
+        }
+
+        .leaderboard-table tbody tr:hover {
+            background: #e8e8e8;
+        }
+
+        .rank-1 { background: #ffd700 !important; color: #000; font-weight: bold; }
+        .rank-2 { background: #c0c0c0 !important; color: #000; font-weight: bold; }
+        .rank-3 { background: #cd7f32 !important; color: #fff; font-weight: bold; }
+
+        .back-btn {
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: #666;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .back-btn:hover {
+            background: #555;
+        }
+
+        /* Mines Game Grid */
+        .mines-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .mine-cell {
+            width: 80px;
+            height: 80px;
+            border: 2px solid #ddd;
+            background: #f0f0f0;
+            cursor: pointer;
+            font-size: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .mine-cell:hover {
+            background: #e0e0e0;
+            transform: scale(1.05);
+        }
+
+        .mine-cell.revealed {
+            cursor: not-allowed;
+            background: #667eea;
+            color: white;
+        }
+
+        .mine-cell.mine {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .mine-cell.treasure {
+            background: #51cf66;
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .color-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .color-btn {
+                width: 100%;
+            }
+
+            .mines-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .mine-cell {
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">🎮 NWIN Gaming</div>
+        <div class="nav-right" id="navRight">
+            <span class="user-name" id="userName"></span>
+            <div class="balance-display">💰 <span id="navBalance">0</span></div>
+            <button onclick="logout()">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Auth Section -->
+        <div id="authSection" class="auth-section">
+            <div id="loginForm">
+                <h2>Welcome to NWIN Gaming</h2>
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="loginUsername" placeholder="Enter username">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter password">
+                </div>
+                <button class="btn" onclick="login()">Login</button>
+                <div class="toggle-auth">
+                    Don't have account? <a onclick="toggleAuth()">Sign Up</a>
+                </div>
+            </div>
+
+            <div id="signupForm" class="hidden">
+                <h2>Create Your Account</h2>
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="signupUsername" placeholder="Choose username">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="signupPassword" placeholder="Create password">
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <input type="password" id="signupConfirm" placeholder="Confirm password">
+                </div>
+                <button class="btn" onclick="signup()">Sign Up</button>
+                <div class="toggle-auth">
+                    Already have account? <a onclick="toggleAuth()">Login</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div id="dashboard" class="dashboard hidden">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <h3>Menu</h3>
+                <button class="sidebar-btn active" onclick="showSection('games')">🎮 Games</button>
+                <button class="sidebar-btn" onclick="showSection('wallet')">💰 Wallet</button>
+                <button class="sidebar-btn" onclick="showSection('leaderboard')">🏆 Leaderboard</button>
+            </div>
+
+            <!-- Main Content -->
+            <div>
+                <!-- Games Section -->
+                <div id="gamesSection" class="games-grid">
+                    <div class="game-card color-game">
+                        <h3>🎨 Color Prediction</h3>
+                        <p>Predict the color and win big!</p>
+                        <button onclick="startGame('color')">Play Now</button>
+                    </div>
+
+                    <div class="game-card mines-game">
+                        <h3>⛏️ Mines</h3>
+                        <p>Avoid mines and collect treasures</p>
+                        <button onclick="startGame('mines')">Play Now</button>
+                    </div>
+
+                    <div class="game-card jilli-game">
+                        <h3>🎲 Jilli</h3>
+                        <p>Roll dice and test your luck</p>
+                        <button onclick="startGame('jilli')">Play Now</button>
+                    </div>
+                </div>
+
+                <!-- Game Play Area -->
+                <div id="gameArea" class="game-area hidden">
+                    <button class="back-btn" onclick="backToGames()">← Back to Games</button>
+
+                    <!-- Color Prediction Game -->
+                    <div id="colorGame" class="hidden">
+                        <h2>🎨 Color Prediction Game</h2>
+                        <div class="game-controls">
+                            <input type="number" id="colorBet" placeholder="Enter bet amount" min="1" value="10">
+                            <button onclick="playColor()">Play</button>
+                        </div>
+                        <div class="color-buttons">
+                            <button class="color-btn red-btn" onclick="chooseColor('Red')">Red</button>
+                            <button class="color-btn green-btn" onclick="chooseColor('Green')">Green</button>
+                            <button class="color-btn blue-btn" onclick="chooseColor('Blue')">Blue</button>
+                        </div>
+                        <div id="colorResult" class="game-result" style="visibility: hidden;"></div>
+                    </div>
+
+                    <!-- Mines Game -->
+                    <div id="minesGame" class="hidden">
+                        <h2>⛏️ Mines Game</h2>
+                        <div class="game-controls">
+                            <input type="number" id="minesBet" placeholder="Enter bet amount" min="1" value="10">
+                            <button onclick="startMinesGame()">Start Game</button>
+                            <button onclick="cashoutMines()" style="background: #28a745;">💰 Cash Out</button>
+                        </div>
+                        <div id="minesGrid" class="mines-grid"></div>
+                        <div id="minesResult" class="game-result" style="visibility: hidden;"></div>
+                    </div>
+
+                    <!-- Jilli Game -->
+                    <div id="jilliGame" class="hidden">
+                        <h2>🎲 Jilli Game</h2>
+                        <div class="game-controls">
+                            <input type="number" id="jilliBet" placeholder="Enter bet amount" min="1" value="10">
+                            <select id="jilliPick">
+                                <option value="1">Pick 1</option>
+                                <option value="2">Pick 2</option>
+                                <option value="3">Pick 3</option>
+                                <option value="4">Pick 4</option>
+                                <option value="5">Pick 5</option>
+                                <option value="6">Pick 6</option>
+                            </select>
+                            <button onclick="playJilli()">Roll Dice</button>
+                        </div>
+                        <div id="jilliResult" class="game-result" style="visibility: hidden;"></div>
+                    </div>
+                </div>
+
+                <!-- Wallet Section -->
+                <div id="walletSection" class="wallet-section hidden">
+                    <h3>💰 My Wallet</h3>
+                    <div class="balance-info">
+                        <h4>Available Balance</h4>
+                        <div class="amount" id="walletBalance">0</div>
+                    </div>
+                    <button class="transaction-btn" onclick="showDepositModal()">➕ Deposit</button>
+                    <button class="transaction-btn" onclick="showWithdrawModal()">➖ Withdraw</button>
+                    <div class="transaction-history">
+                        <h4>Recent Transactions</h4>
+                        <div id="transactionList"></div>
+                    </div>
+                </div>
+
+                <!-- Leaderboard Section -->
+                <div id="leaderboardSection" class="hidden">
+                    <h3 style="color: #1e3c72; margin-bottom: 20px;">🏆 Top Players</h3>
+                    <table class="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Player</th>
+                                <th>Wins</th>
+                                <th>Total Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaderboardBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Deposit Modal -->
+    <div id="depositModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 2000; align-items: center; justify-content: center;">
+        <div style="background: white; padding: 30px; border-radius: 10px; max-width: 400px; width: 90%;">
+            <h3>Deposit Coins</h3>
+            <div class="form-group" style="margin-top: 20px;">
+                <label>Amount to Deposit</label>
+                <input type="number" id="depositAmount" placeholder="Enter amount" min="1">
+            </div>
+            <button class="btn" onclick="processDeposit()">Deposit Now</button>
+            <button class="btn" style="background: #666; margin-top: 10px;" onclick="closeDepositModal()">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Withdraw Modal -->
+    <div id="withdrawModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 2000; align-items: center; justify-content: center;">
+        <div style="background: white; padding: 30px; border-radius: 10px; max-width: 400px; width: 90%;">
+            <h3>Withdraw Coins</h3>
+            <div class="form-group" style="margin-top: 20px;">
+                <label>Amount to Withdraw</label>
+                <input type="number" id="withdrawAmount" placeholder="Enter amount" min="1">
+            </div>
+            <button class="btn" onclick="processWithdraw()">Withdraw Now</button>
+            <button class="btn" style="background: #666; margin-top: 10px;" onclick="closeWithdrawModal()">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        let users = JSON.parse(localStorage.getItem('nwinUsers')) || {};
+        let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+        let gameState = {
+            selectedColor: null,
+            minesGameActive: false,
+            minesRevealed: [],
+            mines: [],
+            treasures: [],
+            currentWinnings: 0
+        };
+
+        // Initialize
+        window.addEventListener('DOMContentLoaded', () => {
+            if (currentUser) {
+                showDashboard();
+            }
+        });
+
+        // Auth Functions
+        function toggleAuth() {
+            document.getElementById('loginForm').classList.toggle('hidden');
+            document.getElementById('signupForm').classList.toggle('hidden');
+        }
+
+        function login() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            if (!username || !password) {
+                alert('Please fill all fields');
+                return;
+            }
+
+            if (!users[username]) {
+                alert('User not found');
+                return;
+            }
+
+            if (users[username].password !== password) {
+                alert('Incorrect password');
+                return;
+            }
+
+            currentUser = username;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            showDashboard();
+        }
+
+        function signup() {
+            const username = document.getElementById('signupUsername').value.trim();
+            const password = document.getElementById('signupPassword').value;
+            const confirm = document.getElementById('signupConfirm').value;
+
+            if (!username || !password || !confirm) {
+                alert('Please fill all fields');
+                return;
+            }
+
+            if (password !== confirm) {
+                alert('Passwords do not match');
+                return;
+            }
+
+            if (users[username]) {
+                alert('Username already exists');
+                return;
+            }
+
+            users[username] = {
+                password: password,
+                balance: 1000,
+                wins: 0,
+                transactions: []
+            };
+
+            localStorage.setItem('nwinUsers', JSON.stringify(users));
+            alert('Account created! Please login');
+            toggleAuth();
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.setItem('currentUser', JSON.stringify(null));
+            location.reload();
+        }
+
+        // Dashboard Functions
+        function showDashboard() {
+            document.getElementById('authSection').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+            document.getElementById('userName').textContent = currentUser;
+            updateBalanceDisplay();
+        }
+
+        function updateBalanceDisplay() {
+            const balance = users[currentUser].balance;
+            document.getElementById('navBalance').textContent = balance;
+            document.getElementById('walletBalance').textContent = balance;
+            updateLeaderboard();
+        }
+
+        function showSection(section) {
+            document.querySelectorAll('.sidebar-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            document.getElementById('gamesSection').classList.add('hidden');
+            document.getElementById('gameArea').classList.add('hidden');
+            document.getElementById('walletSection').classList.add('hidden');
+            document.getElementById('leaderboardSection').classList.add('hidden');
+
+            if (section === 'games') {
+                document.getElementById('gamesSection').classList.remove('hidden');
+                document.getElementById('gameArea').classList.add('hidden');
+            } else if (section === 'wallet') {
+                document.getElementById('walletSection').classList.remove('hidden');
+                updateTransactionList();
+            } else if (section === 'leaderboard') {
+                document.getElementById('leaderboardSection').classList.remove('hidden');
+            }
+        }
+
+        // Game Functions
+        function startGame(game) {
+            document.getElementById('gamesSection').classList.add('hidden');
+            document.getElementById('gameArea').classList.remove('hidden');
+
+            document.getElementById('colorGame').classList.add('hidden');
+            document.getElementById('minesGame').classList.add('hidden');
+            document.getElementById('jilliGame').classList.add('hidden');
+
+            if (game === 'color') {
+                document.getElementById('colorGame').classList.remove('hidden');
+            } else if (game === 'mines') {
+                document.getElementById('minesGame').classList.remove('hidden');
+            } else if (game === 'jilli') {
+                document.getElementById('jilliGame').classList.remove('hidden');
+            }
+        }
+
+        function backToGames() {
+            gameState.selectedColor = null;
+            gameState.minesGameActive = false;
+            document.getElementById('gameArea').classList.add('hidden');
+            document.getElementById('gamesSection').classList.remove('hidden');
+        }
+
+        // Color Game
+        function chooseColor(color) {
+            gameState.selectedColor = color;
+            document.querySelectorAll('.color-btn').forEach(btn => btn.style.border = 'none');
+            event.target.style.border = '4px solid #000';
+        }
+
+        function playColor() {
+            const bet = parseInt(document.getElementById('colorBet').value);
+            const resultDiv = document.getElementById('colorResult');
+
+            if (!bet || bet < 1) {
+                alert('Enter valid bet amount');
+                return;
+            }
+
+            if (!gameState.selectedColor) {
+                alert('Select a color first');
+                return;
+            }
+
+            if (users[currentUser].balance < bet) {
+                alert('Insufficient balance');
+                return;
+            }
+
+            users[currentUser].balance -= bet;
+
+            const colors = ['Red', 'Green', 'Blue'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+
+            if (gameState.selectedColor === randomColor) {
+                const winAmount = bet * 2;
+                users[currentUser].balance += winAmount;
+                users[currentUser].wins++;
+                resultDiv.textContent = `✅ You Won! Result: ${randomColor}. Won ${winAmount} coins!`;
+                resultDiv.classList.remove('result-loss');
+                resultDiv.classList.add('result-win');
+
+                addTransaction(`Color Game - Won ${winAmount}`);
+            } else {
+                resultDiv.textContent = `❌ You Lost! You chose ${gameState.selectedColor}, Result was ${randomColor}. Lost ${bet} coins!`;
+                resultDiv.classList.remove('result-win');
+                resultDiv.classList.add('result-loss');
+
+                addTransaction(`Color Game - Lost ${bet}`);
+            }
+
+            resultDiv.style.visibility = 'visible';
+            updateBalanceDisplay();
+            localStorage.setItem('nwinUsers', JSON.stringify(users));
+            gameState.selectedColor = null;
+            document.querySelectorAll('.color-btn').forEach(btn => btn.style.border = 'none');
+        }
+
+        // Mines Game
+        function startMinesGame() {
+            const bet = parseInt(document.getElementById('minesBet').value);
+
+            if (!bet || bet < 1) {
+                alert('Enter valid bet amount');
+                return;
+            }
+
+            if (users[currentUser].balance < bet) {
+                alert('Insufficient balance');
+                return;
+            }
+
+            users[currentUser].balance -= bet;
+            gameState.currentWinnings = bet;
+            gameState.minesGameActive = true;
+            gameState.minesRevealed = [];
+            gameState.mines = new Set();
+            gameState.treasures = new Set();
+
+            // Randomly place 5 mines and 20 treasures
+            while (gameState.mines.size < 5) {
+                gameState.mines.add(Math.floor(Math.random() * 25));
+            }
+            while (gameState.treasures.size < 20) {
+                const num = Math.floor(Math.random() * 25);
+                if (!gameState.mines.has(num)) {
+                    gameState.treasures.add(num);
+                }
+            }
+
+            const grid = document.getElementById('minesGrid');
+            grid.innerHTML = '';
+
+            for (let i = 0; i < 25; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'mine-cell';
+                cell.textContent = '?';
+                cell.onclick = () => revealMine(i, cell);
+                grid.appendChild(cell);
+            }
+
+            document.getElementById('minesResult').style.visibility = 'hidden';
+            updateBalanceDisplay();
+            localStorage.setItem('nwinUsers', JSON.stringify(users));
+        }
+
+        function revealMine(index, cell) {
+            if (!gameState.minesGameActive || gameState.minesRevealed.includes(index)) return;
+
+            gameState.minesRevealed.push(index);
+            cell.classList.add('revealed');
+
+            if (gameState.mines.has(index)) {
+                cell.classList.add('mine');
+                cell.textContent = '💣';
+                gameState.minesGameActive = false;
+                document.getElementById('minesResult').textContent = `💥 Game Over! Hit a mine. You lost ${parseInt(document.getElementById('minesBet').value)} coins!`;
+                document.getElementById('minesResult').classList.add('result-loss');
+                document.getElementById('minesResult').classList.remove('result-win');
+                document.getElementById('minesResult').style.visibility = 'visible';
+
+                addTransaction(`Mines Game - Lost ${parseInt(document.getElementById('minesBet').value)}`);
+            } else {
+                cell.classList.add('treasure');
+                cell.textContent = '💎';
+                gameState.currentWinnings += parseInt(document.getElementById('minesBet').value) * 0.5;
+            }
+        }
+
+        function cashoutMines() {
+            if (!gameState.minesGameActive) {
+                alert('No active game');
+                return;
+            }
+
+            gameState.minesGameActive = false;
+            users[currentUser].balance += Math.floor(gameState.currentWinnings);
+            users[currentUser].wins++;
+
+            document.getElementById('minesResult').textContent = `✅ Cashed Out! Won ${Math.floor(gameState.currentWinnings)} coins!`;
+            document.getElementById('minesResult').classList.add('result-win');
+            document.getElementById('minesResult').classList.remove('result-loss');
+            document.getElementById('minesResult').style.visibility = 'visible';
+
+            addTransaction(`Mines Game - Won ${Math.floor(gameState.currentWinnings)}`);
+            updateBalanceDisplay();
+            localStorage.setItem('nwinUsers', JSON.stringify(users));
+        }
+
+        // Jilli Game
+        function playJilli() {
+            const bet = parseInt(document.getElementById('jilliBet').value);
+            const pick = parseInt(document.getElementById('jilliPick').value);
+            const resultDiv = document.getElementById('jilliResult');
+
+            if (!bet || bet < 1) {
+                alert('Enter valid bet amount');
+                return;
+            }
+
+            if (users[currentUser].balance < bet) {
+                alert('Insufficient balance');
+                return;
+            }
+
+            users[currentUser].balance -= bet;
+
+            const dice = Math.floor(Math.random() * 6) + 1;
+
+            if (pick === dice) {
+                const winAmount = bet * 5;
+                users[currentUser].balance += winAmount;
+                users[currentUser].wins++;
+                resultDiv.textContent = `🎉 You Won! Dice: ${dice}, Your pick: ${pick}. Won ${winAmount} coins!`;
+                resultDiv.classList.remove('result-loss');
+                resultDiv.classList.add('result-win');
+
+                addTransaction(`Jilli Game - Won ${winAmount}`);
+            } else {
+                resultDiv.textContent = `❌ You Lost! Dice: ${dice}, Your pick: ${pick}. Lost ${bet} coins!`;
+                resultDiv.classList.remove('result-win');
+                resultDiv.classList.add('result-loss');
+
+                addTransaction(`Jilli Game - Lost ${bet}`);
+            }
+
+            resultDiv.style.visibility = 'visible';
+            updateBalanceDisplay();
+            localStorage.setItem('nwinUsers', JSON.stringify(users));
+        }
+
+        // Wallet Functions
+        function showDepositModal() {
+            document.getElementById('depositModal').style.display = 'flex';
+        }
+
+        function closeDepositModal() {
+            document.getElementById('depositModal').style.display = 'none';
+        }
+
+        function processDeposit() {
+            const amount = parseInt(document.getElementById('depositAmount').value);
+
+            if (!amount || amount < 1) {
+                alert('Enter valid amount');
+                return;
+            }
+
+            users[currentUser].balance += amount;
+            addTransaction(`Deposit +${amount}`);
+            updateBalanceDisplay();
+            localStorage.setItem('nwinUsers', JSON.stringify(users));
+            alert(`Successfully deposited ${amount} coins!`);
+            closeDepositModal();
+            document.getElementById('depositAmount').value = '';
+        }
+
+        function showWithdrawModal() {
+            document.getElementById('withdrawModal').style.display = 'flex';
+        }
+
+        function closeWithdrawModal() {
+            document.getElementById('withdrawModal').style.display = 'none';
+        }
+
+        function processWithdraw() {
+            const amount = parseInt(document.getElementById('withdrawAmount').value);
+
+            if (!amount || amount < 1) {
+                alert('Enter valid amount');
+                return;
+            }
+
+            if (users[currentUser].balance < amount) {
+                alert('Insufficient balance');
+                return;
+            }
+
+            users[currentUser].balance -= amount;
+            addTransaction(`Withdrawal -${amount}`);
+            updateBalanceDisplay();
+            localStorage.setItem('nwinUsers', JSON.stringify(users));
+            alert(`Successfully withdrawn ${amount} coins!`);
+            closeWithdrawModal();
+            document.getElementById('withdrawAmount').value = '';
+        }
+
+        function addTransaction(description) {
+            if (!users[currentUser].transactions) {
+                users[currentUser].transactions = [];
+            }
+
+            users[currentUser].transactions.unshift({
+                description: description,
+                date: new Date().toLocaleString()
+            });
+
+            if (users[currentUser].transactions.length > 10) {
+                users[currentUser].transactions.pop();
+            }
+
+            localStorage.setItem('nwinUsers', JSON.stringify(users));
+        }
+
+        function updateTransactionList() {
+            const list = document.getElementById('transactionList');
+            list.innerHTML = '';
+
+            const transactions = users[currentUser].transactions || [];
+
+            if (transactions.length === 0) {
+                list.innerHTML = '<p style="color: #999;">No transactions yet</p>';
+                return;
+            }
+
+            transactions.forEach(tx => {
+                const item = document.createElement('div');
+                item.className = 'transaction-item';
+                item.innerHTML = `<div><strong>${tx.description}</strong></div><div style="font-size: 12px; color: #666;">${tx.date}</div>`;
+                list.appendChild(item);
+            });
+        }
+
+        function updateLeaderboard() {
+            const list = document.getElementById('leaderboardBody');
+            list.innerHTML = '';
+
+            const sorted = Object.entries(users)
+                .sort((a, b) => b[1].balance - a[1].balance)
+                .slice(0, 10);
+
+            sorted.forEach((entry, index) => {
+                const row = document.createElement('tr');
+                let rankClass = '';
+
+                if (index === 0) rankClass = 'rank-1';
+                else if (index === 1) rankClass = 'rank-2';
+                else if (index === 2) rankClass = 'rank-3';
+
+                row.className = rankClass;
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${entry[0]}</td>
+                    <td>${entry[1].wins}</td>
+                    <td>${entry[1].balance}</td>
+                `;
+
+                list.appendChild(row);
+            });
+        }
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const depositModal = document.getElementById('depositModal');
+            const withdrawModal = document.getElementById('withdrawModal');
+
+            if (event.target === depositModal) depositModal.style.display = 'none';
+            if (event.target === withdrawModal) withdrawModal.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
