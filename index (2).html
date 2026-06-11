@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Color Prediction Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: #f4f4f4;
+            padding: 50px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            margin: 10px;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        .red { background: red; }
+        .green { background: green; }
+        .blue { background: blue; }
+
+        #result {
+            margin-top: 20px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        #score {
+            margin-top: 15px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Color Prediction Game</h1>
+
+    <button class="btn red" onclick="play('Red')">Red</button>
+    <button class="btn green" onclick="play('Green')">Green</button>
+    <button class="btn blue" onclick="play('Blue')">Blue</button>
+
+    <div id="result"></div>
+    <div id="score">Score: 0</div>
+
+    <script>
+        let score = 0;
+
+        function play(userChoice) {
+            const colors = ['Red', 'Green', 'Blue'];
+            const randomColor =
+                colors[Math.floor(Math.random() * colors.length)];
+
+            if (userChoice === randomColor) {
+                score++;
+                document.getElementById('result').innerHTML =
+                    `You chose ${userChoice}. Result: ${randomColor}. You Win!`;
+            } else {
+                document.getElementById('result').innerHTML =
+                    `You chose ${userChoice}. Result: ${randomColor}. You Lose!`;
+            }
+
+            document.getElementById('score').innerHTML =
+                `Score: ${score}`;
+        }
+    </script>
+
+</body>
+</html>
